@@ -130,3 +130,6 @@ dist
 
 # Webstorm files
 .idea
+
+# Electron
+dist-electron
