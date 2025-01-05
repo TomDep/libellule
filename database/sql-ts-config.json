@@ -1,0 +1,10 @@
+{
+  "client": "sqlite3",
+  "connection": {
+    "filename": "./database/libellule.db"
+  },
+  "useNullAsDefault": true,
+  "filename": "./database/model",
+  "interfaceNameFormat": "${table}",
+  "tableNameCasing": "pascal"
+}

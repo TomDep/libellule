@@ -3,6 +3,8 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 import { Backend } from '../backend/backend'
 import { ElectronFileManager } from './electronFileManager'
 
+let backend: Backend | null = null
+
 app.whenReady().then(() => {
   const win = new BrowserWindow({
     width: 1500,
@@ -17,9 +19,12 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
+  backend.quit()
 })
 
-app.on('ready', () => {
+app.on('ready', async () => {
   const electronFileManager = new ElectronFileManager(app)
-  new Backend(electronFileManager)
+  backend = new Backend(electronFileManager)
+
+  await backend.updateDatabase()
 })
