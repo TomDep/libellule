@@ -11,3 +11,5 @@ Object.values(
 ).forEach((v) => app.use(v))
 
 app.mount('#app')
+
+console.log('Hello from services');
