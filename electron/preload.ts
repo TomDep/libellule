@@ -1,5 +1,10 @@
 import { contextBridge, ipcRenderer } from 'electron'
 
-contextBridge.exposeInMainWorld('electronAPI', {
-  toggleDark: (dark: boolean) => ipcRenderer.invoke('darkMode:toggle', dark),
-})
+// Create a type that should contain all the data we need to expose in the
+// renderer process using `contextBridge`.
+export type ContextBridgeApi = {}
+
+const api: ContextBridgeApi = {}
+
+// Expose our functions in the `api` namespace of the renderer `Window`.
+contextBridge.exposeInMainWorld('api', api)

@@ -1,12 +1,17 @@
 import { app, BrowserWindow } from 'electron'
-process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 import { Backend } from '../backend/backend'
 import { ElectronFileManager } from './electronFileManager'
+import path from 'path'
 
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 let backend: Backend | null = null
 
 app.whenReady().then(() => {
   const win = new BrowserWindow({
+    webPreferences: {
+      // Link to your compiled preload file.
+      preload: path.join(__dirname, '../dist-electron/preload.mjs'),
+    },
     width: 1500,
     height: 900,
     minHeight: 400,
