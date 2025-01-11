@@ -43,45 +43,45 @@ export default defineConfig(({ command }: { command: 'build' | 'serve' }) => {
         dts: 'src/auto-imports.d.ts',
         dirs: ['src/stores'],
       }),
-      // Electron({
-      //   main: {
-      //     entry: 'electron/main.ts',
-      //     onstart({ startup }) {
-      //       return startup()
-      //     },
-      //     vite: {
-      //       build: {
-      //         target: 'esnext',
-      //         sourcemap,
-      //         minify: isBuild,
-      //         outDir: 'dist-electron',
-      //         rollupOptions: {
-      //           output: {
-      //             inlineDynamicImports: true,
-      //           },
-      //         },
-      //       },
-      //       plugins: [command === 'serve' && notBundle(/* NotBundleOptions */)],
-      //     },
-      //   },
-      //   preload: {
-      //     // Shortcut of `build.rollupOptions.input`.
-      //     // Preload scripts may contain Web assets, so use the `build.rollupOptions.input` instead `build.lib.entry`.
-      //     input: 'electron/preload.ts',
-      //     vite: {
-      //       build: {
-      //         target: 'esnext',
-      //         sourcemap: sourcemap ? 'inline' : undefined, // #332
-      //         minify: isBuild,
-      //         outDir: 'dist-electron',
-      //       },
-      //     },
-      //   },
-      //   // Polyfill the Electron and Node.js API for Renderer process.
-      //   // If you want to use Node.js in Renderer process, the `nodeIntegration` needs to be enabled in the Main process.
-      //   // See 👉 https://github.com/electron-vite/vite-plugin-electron-renderer
-      //   // renderer: {},
-      // }),
+      Electron({
+        main: {
+          entry: 'electron/main.ts',
+          onstart({ startup }) {
+            return startup()
+          },
+          vite: {
+            build: {
+              target: 'esnext',
+              sourcemap,
+              minify: isBuild,
+              outDir: 'dist-electron',
+              rollupOptions: {
+                output: {
+                  inlineDynamicImports: true,
+                },
+              },
+            },
+            plugins: [command === 'serve' && notBundle(/* NotBundleOptions */)],
+          },
+        },
+        preload: {
+          // Shortcut of `build.rollupOptions.input`.
+          // Preload scripts may contain Web assets, so use the `build.rollupOptions.input` instead `build.lib.entry`.
+          input: 'electron/preload.ts',
+          vite: {
+            build: {
+              target: 'esnext',
+              sourcemap: sourcemap ? 'inline' : undefined, // #332
+              minify: isBuild,
+              outDir: 'dist-electron',
+            },
+          },
+        },
+        // Polyfill the Electron and Node.js API for Renderer process.
+        // If you want to use Node.js in Renderer process, the `nodeIntegration` needs to be enabled in the Main process.
+        // See 👉 https://github.com/electron-vite/vite-plugin-electron-renderer
+        // renderer: {},
+      }),
     ],
     css: {
       devSourcemap: true,

@@ -10,7 +10,7 @@ app.whenReady().then(() => {
   const win = new BrowserWindow({
     webPreferences: {
       // Link to your compiled preload file.
-      preload: path.join(__dirname, '../dist-electron/preload.mjs'),
+      preload: path.join(app.getAppPath(), '../dist-electron/preload.mjs'),
     },
     width: 1500,
     height: 900,
