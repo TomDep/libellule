@@ -8,17 +8,17 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-main class="d-flex align-center justify-center" style="min-height: 300px;">
+    <v-main class="d-flex align-center justify-center" style="min-height: 300px">
       Main Content
     </v-main>
   </v-layout>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-facing-decorator'
+import { Vue, Component, toNative } from 'vue-facing-decorator'
 
 @Component({})
-export default class App extends Vue {
+class App extends Vue {}
 
-}
+export default toNative(App)
 </script>
