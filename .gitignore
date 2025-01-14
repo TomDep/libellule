@@ -136,3 +136,6 @@ dist
 
 # Electron
 dist-electron
+
+# Database
+database/libellule.db
