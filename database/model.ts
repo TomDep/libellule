@@ -22,6 +22,7 @@ export interface Genre {
 }
 export interface Song {
   'album_id'?: number | null;
+  'file_location'?: string | null;
   'song_id'?: number;
   'title': string;
 }

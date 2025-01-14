@@ -1,7 +1,7 @@
 import { type FileManager } from './fileManager'
 import { DataBaseManager } from './databaseManager'
 import path from 'path'
-import { UNPROCESSED_FILES_DIRECTORY } from './config'
+import { COLLECTION_DIRECTORY, UNPROCESSED_FILES_DIRECTORY } from './config'
 
 export class Backend {
   private readonly fileManager: FileManager
@@ -18,9 +18,12 @@ export class Backend {
     const files = await this.fileManager.getUnprocessedFiles()
 
     for (const file of files) {
-      const fullPath = path.join(UNPROCESSED_FILES_DIRECTORY, file)
-      this.databaseManager.processSong(fullPath).then((r) => {
-        // Move the file to the processed directory
+      const songPath = path.join(UNPROCESSED_FILES_DIRECTORY, file)
+      const songId = await this.databaseManager.processSong(songPath)
+
+      const fileDestination = path.join(COLLECTION_DIRECTORY, file)
+      this.fileManager.moveFile(songPath, fileDestination).then((_) => {
+        this.databaseManager.songManager.updateSongPath(songId, fileDestination)
       })
     }
   }

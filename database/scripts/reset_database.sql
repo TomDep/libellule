@@ -1,0 +1,10 @@
+DROP TABLE IF EXISTS album_type;
+DROP TABLE IF EXISTS genre;
+DROP TABLE IF EXISTS song_genre;
+DROP TABLE IF EXISTS album;
+DROP TABLE IF EXISTS album_type;
+DROP TABLE IF EXISTS song;
+DROP TABLE IF EXISTS song_artist;
+DROP TABLE IF EXISTS artist;
+
+DELETE FROM sqlite_sequence;

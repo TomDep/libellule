@@ -1,7 +1,7 @@
 import { FileManager } from '../backend/fileManager'
 import { app as ElectronApp } from 'electron'
+import { COLLECTION_DIRECTORY, UNPROCESSED_FILES_DIRECTORY } from '../backend/config'
 import fs from 'fs'
-import { UNPROCESSED_FILES_DIRECTORY } from '../backend/config'
 
 export class ElectronFileManager implements FileManager {
   private readonly app: typeof ElectronApp
@@ -28,5 +28,13 @@ export class ElectronFileManager implements FileManager {
 
   public getRootDirectory(): string {
     return this.app.getAppPath()
+  }
+
+  public getCollectionDirectory(): string {
+    return COLLECTION_DIRECTORY
+  }
+
+  public async moveFile(filePath: string, fileDestination: string): Promise<void> {
+    return fs.renameSync(filePath, fileDestination)
   }
 }

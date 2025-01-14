@@ -2,12 +2,17 @@ import path from 'path'
 import sqlite3 from 'sqlite3'
 import { parseFile } from 'music-metadata'
 import { Album, Artist, Song } from '../database/model'
+import { SongManager } from './songManager'
 
 export class DataBaseManager {
   private db: sqlite3.Database
 
+  public readonly songManager: SongManager
+
   public constructor(rootDirectory: string) {
     this.connectToDatabase(rootDirectory)
+
+    this.songManager = new SongManager(this)
   }
 
   private connectToDatabase(rootDirectory: string) {
@@ -29,69 +34,33 @@ export class DataBaseManager {
   }
 
   private insertSong(song: Song): Promise<number> {
-    return new Promise((resolve, reject) => {
-      this.db.run(
-        'INSERT INTO song (title, album_id) VALUES(?, ?)',
-        song.title,
-        song.album_id,
-        function (error: Error | null) {
-          if (error) reject(error)
-          resolve(this.lastID)
-        },
-      )
-    })
+    return this.run('INSERT INTO song (title, album_id) VALUES(?, ?)', song.title, song.album_id)
   }
 
-  private insertArtist(artist: Artist): Promise<number> {
-    return new Promise<number>(async (resolve, reject) => {
-      const existingArtist = await this.findArtistByName(artist.name)
-      if (existingArtist) {
-        resolve(existingArtist.artist_id)
-        return
-      }
+  private async insertArtist(artist: Artist): Promise<number> {
+    const existingArtist = await this.findArtistByName(artist.name)
+    if (existingArtist) {
+      return existingArtist.artist_id
+    }
 
-      this.db.run(
-        'INSERT INTO artist (name) VALUES(?)',
-        artist.name,
-        function (error: Error | null) {
-          if (error) reject(error)
-          resolve(this.lastID)
-        },
-      )
-    })
+    return await this.run('INSERT INTO artist (name) VALUES(?)', artist.name)
   }
 
   private findArtistByName(name: string): Promise<Artist | undefined> {
-    return new Promise<Artist | undefined>((resolve, reject) => {
-      this.db.get(
-        'SELECT * FROM artist WHERE name = ?',
-        name,
-        function (error: Error | null, row: Artist | undefined) {
-          if (error) reject(error)
-          resolve(row)
-        },
-      )
-    })
+    return this.get('SELECT * FROM artist WHERE name = ?', name)
   }
 
-  private insertAlbum(album: Album): Promise<number> {
-    return new Promise<number>(async (resolve, reject) => {
-      const existingAlbum = await this.findAlbumByName(album.name)
-      if (existingAlbum) {
-        resolve(existingAlbum.album_id)
-        return
-      }
+  private async insertAlbum(album: Album): Promise<number> {
+    const existingAlbum = await this.findAlbumByName(album.name)
+    if (existingAlbum) {
+      return existingAlbum.album_id
+    }
 
-      this.db.run(
-        'INSERT INTO album (name, artist_id) VALUES(?, ?)',
-        album.name,
-        album.artist_id,
-        function (error: Error | null) {
-          if (error) reject(error)
-          resolve(this.lastID)
-        },
-      )
-    })
+    return await this.run(
+      'INSERT INTO album (name, artist_id) VALUES(?, ?)',
+      album.name,
+      album.artist_id,
+    )
   }
 
   private findAlbumByName(name: string): Promise<Album | undefined> {
@@ -112,7 +81,7 @@ export class DataBaseManager {
     this.db.close()
   }
 
-  public async processSong(fullPath: string): Promise<void> {
+  public async processSong(fullPath: string): Promise<number> {
     const metadata = await parseFile(fullPath)
 
     const title = metadata.common.title
@@ -137,9 +106,35 @@ export class DataBaseManager {
     for (const artistId of artistIds) {
       this.linkArtistAndSong(artistId, songId)
     }
+
+    return songId
   }
 
   private linkArtistAndSong(artistId: number, songId: number): void {
     this.db.run('INSERT INTO song_artist (song_id, artist_id) VALUES(?, ?)', songId, artistId)
+  }
+
+  public run(sqlRequest: string, ...values: unknown[]): Promise<number> {
+    return new Promise((resolve, reject) => {
+      this.db.run(sqlRequest, values, function (error: Error | null) {
+        if (error) {
+          reject(error)
+        } else {
+          resolve(this.lastID)
+        }
+      })
+    })
+  }
+
+  public get<T = object>(sqlRequest: string, ...values: unknown[]): Promise<T | undefined> {
+    return new Promise((resolve, reject) => {
+      this.db.get(sqlRequest, values, function (error: Error | null, row: T | undefined) {
+        if (error) {
+          reject(error)
+        } else {
+          resolve(row)
+        }
+      })
+    })
   }
 }

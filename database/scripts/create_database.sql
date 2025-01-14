@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS song (
                                     song_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                                     title TEXT NOT NULL,
                                     album_id INTEGER,
+                                    file_location VARCHAR(500),
                                     FOREIGN KEY (album_id) REFERENCES album (album_id)
 );
 
