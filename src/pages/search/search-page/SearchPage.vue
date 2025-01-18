@@ -1,12 +1,12 @@
 <template>
-    <search-view />
+    <SearchView />
 </template>
 
 <script lang="ts">
 import { Vue, Component, toNative } from 'vue-facing-decorator'
 
 @Component({})
-export class SearchPage extends Vue {}
+class SearchPage extends Vue {}
 
 export default toNative(SearchPage)
 </script>

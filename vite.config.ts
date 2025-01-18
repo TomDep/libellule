@@ -2,16 +2,11 @@
 import fs from 'node:fs'
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
-import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
 import VueDevTools from 'vite-plugin-vue-devtools'
 import Vue from '@vitejs/plugin-vue'
 import Electron from 'vite-plugin-electron/simple'
 import { notBundle } from 'vite-plugin-electron/plugin'
-import VueRouter from 'unplugin-vue-router/vite'
-import { VueRouterAutoImports } from 'unplugin-vue-router'
-import Components from 'unplugin-vue-components/vite'
-import AutoImport from 'unplugin-auto-import/vite'
 
 export default defineConfig(({ command }: { command: 'build' | 'serve' }) => {
     fs.rmSync('dist-electron', { recursive: true, force: true })
@@ -29,22 +24,6 @@ export default defineConfig(({ command }: { command: 'build' | 'serve' }) => {
                         isCustomElement: (tag) => tag.startsWith('mdui-'),
                     },
                 },
-            }),
-            Components({
-                dts: './src/components.d.ts',
-                types: [],
-                dirs: ['src/components', 'src/views', 'src/pages'],
-            }),
-            AutoImport({
-                imports: [
-                    'vue',
-                    VueRouterAutoImports,
-                    {
-                        vuetify: ['useTheme', 'useRtl', 'useLocale', 'useDisplay', 'useLayout'],
-                    },
-                ],
-                dts: 'src/auto-imports.d.ts',
-                dirs: ['src/stores'],
             }),
             Electron({
                 main: {
@@ -99,7 +78,6 @@ export default defineConfig(({ command }: { command: 'build' | 'serve' }) => {
             include: ['test/**/*.test.ts', 'src/**/__tests__/*'],
             environment: 'jsdom',
             setupFiles: ['./test/setup.ts'],
-            server: { deps: { inline: ['vuetify'] } },
         },
     }
 })

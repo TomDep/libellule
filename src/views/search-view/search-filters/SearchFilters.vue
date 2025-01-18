@@ -4,7 +4,7 @@
 import { Vue, Component, toNative } from 'vue-facing-decorator'
 
 @Component({})
-export class SearchFilters extends Vue {}
+class SearchFilters extends Vue {}
 
 export default toNative(SearchFilters)
 </script>

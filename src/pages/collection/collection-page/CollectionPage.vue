@@ -4,7 +4,7 @@
 import { Vue, Component, toNative } from 'vue-facing-decorator'
 
 @Component({})
-export class CollectionPage extends Vue {}
+class CollectionPage extends Vue {}
 
 export default toNative(CollectionPage)
 </script>

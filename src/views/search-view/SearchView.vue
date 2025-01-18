@@ -9,7 +9,7 @@
 import { Vue, Component, toNative } from 'vue-facing-decorator'
 
 @Component({})
-export class SearchView extends Vue {}
+class SearchView extends Vue {}
 
 export default toNative(SearchView)
 </script>

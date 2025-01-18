@@ -6,6 +6,8 @@ const app = createApp(App)
 import 'mdui/mdui.css'
 import 'mdui'
 
+import 'normalize.css'
+
 import { setColorScheme } from 'mdui/functions/setColorScheme.js'
 setColorScheme('#ff0000')
 

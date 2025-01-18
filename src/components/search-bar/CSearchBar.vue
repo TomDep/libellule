@@ -12,7 +12,7 @@
 import { Vue, Component, toNative } from 'vue-facing-decorator'
 
 @Component({})
-export class CSearchBar extends Vue {
+class CSearchBar extends Vue {
     public clicked(): void {
         console.log('clicked')
     }

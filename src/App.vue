@@ -20,9 +20,8 @@
 
 <script lang="ts">
 import { Vue, Component, toNative } from 'vue-facing-decorator'
-import CNavigationRail from '@/components/navigation-rail/CNavigationRail.vue'
 
-@Component({ components: { CNavigationRail } })
+@Component({})
 class App extends Vue {}
 
 export default toNative(App)

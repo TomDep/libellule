@@ -6,7 +6,7 @@
 import { Vue, Component, toNative } from 'vue-facing-decorator'
 
 @Component({})
-export class SearchInput extends Vue {}
+class SearchInput extends Vue {}
 
 export default toNative(SearchInput)
 </script>
