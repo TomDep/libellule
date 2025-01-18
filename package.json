@@ -25,6 +25,7 @@
     "generate-database-model": "npx @rmp135/sql-ts -c ./database/sql-ts-config.json"
   },
   "dependencies": {
+    "@fontsource/roboto": "^5.1.1",
     "@mdui/icons": "^1.0.2",
     "@rmp135/sql-ts": "^2.2.0",
     "mdui": "^2.1.3",

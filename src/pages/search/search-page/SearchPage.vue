@@ -4,8 +4,9 @@
 
 <script lang="ts">
 import { Vue, Component, toNative } from 'vue-facing-decorator'
+import SearchView from '@/views/search-view/SearchView.vue'
 
-@Component({})
+@Component({ components: { SearchView } })
 class SearchPage extends Vue {}
 
 export default toNative(SearchPage)

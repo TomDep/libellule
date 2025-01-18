@@ -1,5 +1,13 @@
 <template>
-    <div class="d-flex flex-column ga-2">
+    <div
+        style="
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 auto;
+            align-items: center;
+            width: 80%;
+        "
+    >
         <SearchInput />
         <SearchFilters />
     </div>
@@ -7,8 +15,10 @@
 
 <script lang="ts">
 import { Vue, Component, toNative } from 'vue-facing-decorator'
+import SearchInput from '@/views/search-view/search-input/SearchInput.vue'
+import SearchFilters from '@/views/search-view/search-filters/SearchFilters.vue'
 
-@Component({})
+@Component({ components: { SearchInput, SearchFilters } })
 class SearchView extends Vue {}
 
 export default toNative(SearchView)

@@ -2,7 +2,10 @@
     <mdui-layout style="height: 100vh; width: 100vw">
         <mdui-navigation-rail alignment="center" style="position: relative">
             <mdui-button-icon icon="menu" slot="top"></mdui-button-icon>
-            <mdui-fab icon="edit--outlined" slot="top"></mdui-fab>
+
+            <router-link to="/search" slot="top">
+                <mdui-fab icon="search--outlined"></mdui-fab>
+            </router-link>
 
             <mdui-navigation-rail-item icon="watch_later--outlined"
                 >Recent</mdui-navigation-rail-item
@@ -14,7 +17,11 @@
 
             <mdui-button-icon icon="settings" slot="bottom"></mdui-button-icon>
         </mdui-navigation-rail>
-        <mdui-layout-main>Main</mdui-layout-main>
+        <mdui-layout-main>
+            <div class="main">
+                <router-view />
+            </div>
+        </mdui-layout-main>
     </mdui-layout>
 </template>
 
@@ -26,3 +33,16 @@ class App extends Vue {}
 
 export default toNative(App)
 </script>
+
+<style scoped lang="scss">
+.main {
+    display: flex;
+    justify-content: center;
+    padding: 24px;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: rgb(var(--mdui-color-surface));
+}
+</style>

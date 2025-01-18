@@ -7,6 +7,9 @@ import 'mdui/mdui.css'
 import 'mdui'
 
 import 'normalize.css'
+import '@/styles/main.scss'
+
+import '@fontsource/roboto'
 
 import { setColorScheme } from 'mdui/functions/setColorScheme.js'
 setColorScheme('#ff0000')
