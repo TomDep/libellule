@@ -1,23 +1,28 @@
 <template>
-  <v-layout class="rounded rounded-md">
-    <v-app-bar title="Application bar"></v-app-bar>
+    <mdui-layout style="height: 100vh; width: 100vw">
+        <mdui-navigation-rail alignment="center" style="position: relative">
+            <mdui-button-icon icon="menu" slot="top"></mdui-button-icon>
+            <mdui-fab icon="edit--outlined" slot="top"></mdui-fab>
 
-    <v-navigation-drawer>
-      <v-list>
-        <v-list-item title="Navigation drawer"></v-list-item>
-      </v-list>
-    </v-navigation-drawer>
+            <mdui-navigation-rail-item icon="watch_later--outlined"
+                >Recent</mdui-navigation-rail-item
+            >
+            <mdui-navigation-rail-item icon="image--outlined">Images</mdui-navigation-rail-item>
+            <mdui-navigation-rail-item icon="library_music--outlined">
+                Library
+            </mdui-navigation-rail-item>
 
-    <v-main class="d-flex align-center justify-center" style="min-height: 300px">
-      Main Content
-    </v-main>
-  </v-layout>
+            <mdui-button-icon icon="settings" slot="bottom"></mdui-button-icon>
+        </mdui-navigation-rail>
+        <mdui-layout-main>Main</mdui-layout-main>
+    </mdui-layout>
 </template>
 
 <script lang="ts">
 import { Vue, Component, toNative } from 'vue-facing-decorator'
+import CNavigationRail from '@/components/navigation-rail/CNavigationRail.vue'
 
-@Component({})
+@Component({ components: { CNavigationRail } })
 class App extends Vue {}
 
 export default toNative(App)
