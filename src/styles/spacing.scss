@@ -1,0 +1,21 @@
+$spacing_keywords: (t: top, b: bottom, l: left, r: right);
+
+@for $value from 1 through 8 {
+    @each $short_keyword, $keyword in $spacing_keywords {
+        .p#{$short_keyword}-#{$value} {
+            padding-#{$keyword}: #{$value * 4};
+        }
+
+        .pa-#{$value} {
+            padding: #{$value * 4};
+        }
+
+        .m#{$short_keyword}-#{$value} {
+            margin-#{$keyword}: #{$value * 4};
+        }
+
+        .ma-#{$value} {
+            margin: #{$value * 4};
+        }
+    }
+}
