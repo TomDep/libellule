@@ -1,8 +1,9 @@
 // https://vitejs.dev/config/
 import fs from 'node:fs'
-import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 
+import { fileURLToPath, URL } from 'url'
+import tsconfigPaths from 'vite-tsconfig-paths'
 import VueDevTools from 'vite-plugin-vue-devtools'
 import Vue from '@vitejs/plugin-vue'
 import Electron from 'vite-plugin-electron/simple'
@@ -12,11 +13,11 @@ export default defineConfig(({ command }: { command: 'build' | 'serve' }) => {
     fs.rmSync('dist-electron', { recursive: true, force: true })
     const isServe = command === 'serve'
     const isBuild = command === 'build'
-    const sourcemap = isServe || !!process.env.VSCODE_DEBUG
 
     return {
         build: { target: 'esnext', chunkSizeWarningLimit: 5000 },
         plugins: [
+            tsconfigPaths(),
             VueDevTools(),
             Vue({
                 template: {
@@ -27,14 +28,14 @@ export default defineConfig(({ command }: { command: 'build' | 'serve' }) => {
             }),
             Electron({
                 main: {
-                    entry: 'electron/main.ts',
+                    entry: 'src/electron/main.ts',
                     onstart({ startup }) {
-                        return startup()
+                        startup()
                     },
                     vite: {
                         build: {
                             target: 'esnext',
-                            sourcemap,
+                            sourcemap: isServe,
                             minify: isBuild,
                             outDir: 'dist-electron',
                             rollupOptions: {
@@ -43,35 +44,39 @@ export default defineConfig(({ command }: { command: 'build' | 'serve' }) => {
                                 },
                             },
                         },
-                        plugins: [command === 'serve' && notBundle(/* NotBundleOptions */)],
-                    },
-                },
-                preload: {
-                    // Shortcut of `build.rollupOptions.input`.
-                    // Preload scripts may contain Web assets, so use the `build.rollupOptions.input` instead `build.lib.entry`.
-                    input: 'electron/preload.ts',
-                    vite: {
-                        build: {
-                            target: 'esnext',
-                            sourcemap: sourcemap ? 'inline' : undefined, // #332
-                            minify: isBuild,
-                            outDir: 'dist-electron',
+                        plugins: [isServe && notBundle()],
+                        resolve: {
+                            alias: {
+                                '@': fileURLToPath(new URL('./src', import.meta.url)),
+                            },
                         },
                     },
                 },
-                // Polyfill the Electron and Node.js API for Renderer process.
-                // If you want to use Node.js in Renderer process, the `nodeIntegration` needs to be enabled in the Main process.
-                // See 👉 https://github.com/electron-vite/vite-plugin-electron-renderer
-                // renderer: {},
+                preload: {
+                    input: 'src/electron/preload.ts',
+                    vite: {
+                        build: {
+                            target: 'esnext',
+                            sourcemap: isServe ? 'inline' : undefined, // #332
+                            minify: isBuild,
+                            outDir: 'dist-electron',
+                        },
+                        plugins: [isServe && notBundle()],
+                        resolve: {
+                            alias: {
+                                '@': fileURLToPath(new URL('./src', import.meta.url)),
+                            },
+                        },
+                    },
+                },
             }),
         ],
         css: {
             devSourcemap: true,
         },
+        base: '.',
         resolve: {
-            alias: {
-                '@': fileURLToPath(new URL('./src', import.meta.url)),
-            },
+            alias: [{ find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) }],
         },
         test: {
             globals: true,

@@ -138,4 +138,4 @@ dist
 dist-electron
 
 # Database
-database/libellule.db
+src/database/libellule.db
