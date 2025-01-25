@@ -2,35 +2,26 @@
     <div class="d-flex flex-row gap-2 flex-1">
         <div class="d-flex flex-column flex-1">
             <p>{{ result.name }}</p>
-            <p>{{ artist }}</p>
+            <p>{{ artistName }}</p>
         </div>
         <p>{{ result.type }}</p>
     </div>
 </template>
 
-<script lang="ts">
-import { Vue, Component, toNative, Prop } from 'vue-facing-decorator'
-import { SearchResult as SearchResultModel } from '@/api'
+<script lang="ts" setup>
+import { SearchResult } from '@/api'
+import { computed } from 'vue'
 
-@Component({})
-export class VSearchResult extends Vue {
-    @Prop({
-        required: true,
-        type: Object,
-        default: () => {},
-    })
-    public readonly result!: SearchResultModel
+const props = defineProps<{
+    result: SearchResult
+}>()
 
-    public get artist(): string {
-        if (this.result.type === 'artist') {
-            return this.result.name
-        } else {
-            return this.result.artist
-        }
+const artistName = computed(() => {
+    if (props.result.type === 'artist') {
+        return props.result.name
+    } else {
+        return props.result.artist
     }
-}
-
-export default toNative(VSearchResult)
+})
 </script>
-
 <style scoped></style>

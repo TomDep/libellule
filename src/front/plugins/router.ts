@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, type RouterOptions } from 'vue-router'
 
-import CollectionPage from '@/front/pages/collection/collection-page/CollectionPage.vue'
-import SearchPage from '@/front/pages/search/search-page/SearchPage.vue'
+import VCollectionPage from '@/front/pages/collection/collection-page/VCollectionPage.vue'
+import VSearchPage from '@/front/pages/search/search-page/VSearchPage.vue'
 
 const options: RouterOptions = {
     history: createWebHistory(),
@@ -9,12 +9,12 @@ const options: RouterOptions = {
         {
             name: 'collection',
             path: '/collection',
-            component: CollectionPage,
+            component: VCollectionPage,
         },
         {
             name: 'search',
             path: '/search',
-            component: SearchPage,
+            component: VSearchPage,
         },
         {
             path: '/:pathMatch(.*)*',

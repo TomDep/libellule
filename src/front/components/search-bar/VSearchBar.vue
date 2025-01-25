@@ -6,40 +6,36 @@
 
         <div class="input-container">
             <input
+                ref="input"
                 v-model="searchString"
-                type="text"
                 class="input"
                 placeholder="Search for a song title, album, artists..."
-                ref="input"
+                type="text"
             />
         </div>
     </div>
 </template>
 
-<script lang="ts">
-import { Vue, Ref, Component, toNative } from 'vue-facing-decorator'
+<script lang="ts" setup>
+import { onMounted, ref, useTemplateRef } from 'vue'
 
-@Component({ emits: ['search'] })
-class VSearchBar extends Vue {
-    @Ref('input')
-    public readonly input!: HTMLInputElement
+const input = useTemplateRef<HTMLInputElement>('input')
+const searchString = ref('')
 
-    public searchString: string = ''
+onMounted(() => {
+    window.addEventListener('keydown', (event: KeyboardEvent) => {
+        if (event.key !== 'f' || !event.ctrlKey) return
+        input?.value?.focus()
+    })
+})
 
-    public mounted(): void {
-        window.addEventListener('keydown', (event: KeyboardEvent) => {
-            if (event.key !== 'f' || !event.ctrlKey) return
+const emit = defineEmits<{
+    search: [searchString: string]
+}>()
 
-            this.input.focus()
-        })
-    }
-
-    public search(): void {
-        this.$emit('search', this.searchString)
-    }
+function search(): void {
+    emit('search', this.searchString)
 }
-
-export default toNative(VSearchBar)
 </script>
 
 <style scoped>
