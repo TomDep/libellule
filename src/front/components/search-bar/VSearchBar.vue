@@ -13,6 +13,10 @@
                 type="text"
             />
         </div>
+
+        <div v-if="searchString" class="clear-button-container">
+            <mdui-button-icon icon="close" @click="clearSearchString"></mdui-button-icon>
+        </div>
     </div>
 </template>
 
@@ -25,7 +29,7 @@ const searchString = ref('')
 onMounted(() => {
     window.addEventListener('keydown', (event: KeyboardEvent) => {
         if (event.key !== 'f' || !event.ctrlKey) return
-        input?.value?.focus()
+        input.value?.focus()
     })
 })
 
@@ -34,7 +38,13 @@ const emit = defineEmits<{
 }>()
 
 function search(): void {
-    emit('search', this.searchString)
+    emit('search', searchString.value)
+}
+
+function clearSearchString(): void {
+    searchString.value = ''
+    search()
+    input.value?.focus()
 }
 </script>
 
@@ -73,6 +83,10 @@ function search(): void {
             width: 100%;
             height: 100%;
         }
+    }
+
+    .clear-button-container {
+        margin-right: 12px;
     }
 }
 </style>

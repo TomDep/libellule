@@ -25,11 +25,16 @@ const searchBarLoading = ref(false)
 const searchResults = ref<SearchResult[]>([])
 
 async function search(searchString: string) {
+    if (!searchString) {
+        searchResults.value = []
+        return
+    }
+
     searchBarLoading.value = true
     searchResults.value = await window.api.search(searchString)
     searchBarLoading.value = false
 
-    console.log(this.searchResults)
+    console.log(searchResults)
 }
 </script>
 
