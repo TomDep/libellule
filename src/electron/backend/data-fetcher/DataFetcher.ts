@@ -23,12 +23,15 @@ export class DataFetcher {
 
     public async fetchAlbum(albumId: string): Promise<Album> {
         const songIds = (
-            await this.databaseManager.each<{ songId: number }>(`SELECT 
+            await this.databaseManager.each<{ songId: number }>(
+                `SELECT 
             song_id as songId 
             FROM album al 
             LEFT JOIN song s ON al.album_id = s.album_id
-            WHERE al.album_id = 1
-        `)
+            WHERE al.album_id = ?
+        `,
+                albumId,
+            )
         ).map((result) => result.songId)
 
         const songs = await Promise.all(songIds.map((id) => this.fetchSong(id)))
