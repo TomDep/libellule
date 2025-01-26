@@ -1,4 +1,5 @@
 import VAlbumPage from '@/front/pages/album'
+import VArtistPage from '@/front/pages/artist'
 import { createRouter, createWebHistory, type RouterOptions } from 'vue-router'
 
 import VCollectionPage from '@/front/pages/collection/collection-page/VCollectionPage.vue'
@@ -16,6 +17,11 @@ const options: RouterOptions = {
             name: 'album',
             path: '/collection/album/:id',
             component: VAlbumPage,
+        },
+        {
+            name: 'artist',
+            path: '/collection/artist/:id',
+            component: VArtistPage,
         },
         {
             name: 'search',

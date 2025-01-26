@@ -25,6 +25,8 @@ const album = ref<Album | null>(null)
 
 onBeforeMount(async () => {
     const albumId = Number(route.params.id)
+    console.log(albumId)
+
     if (albumId) {
         album.value = await window.api.fetchAlbum(albumId)
     }

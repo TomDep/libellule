@@ -1,4 +1,4 @@
-import { Album, Artist, Song } from '@/api'
+import { Album, AlbumPreview, Artist, Song } from '@/api'
 import { DataBaseManager } from '@/electron/backend/databaseManager'
 
 export class DataFetcher {
@@ -6,6 +6,25 @@ export class DataFetcher {
 
     public constructor(databaseManager: DataBaseManager) {
         this.databaseManager = databaseManager
+    }
+
+    public async fetchArtistAlbumPreviews(artistId: number): Promise<AlbumPreview[]> {
+        return this.databaseManager.each<AlbumPreview>(
+            `SELECT 
+            name, 
+            album_id AS id,
+            (SELECT 
+                COUNT(*) 
+                FROM (SELECT 
+                        * 
+                        FROM song 
+                        WHERE song.album_id = album.album_id
+                )
+            ) as songNumber
+            FROM album 
+            WHERE artist_id = ?`,
+            artistId,
+        )
     }
 
     public async fetchSongAlbumId(songId: string): Promise<number> {
@@ -19,6 +38,19 @@ export class DataFetcher {
         }
 
         return result.album_id
+    }
+
+    public async fetchArtist(artistId: string): Promise<Artist> {
+        const result = await this.databaseManager.get<Artist>(
+            `SELECT artist_id as id, name FROM artist WHERE artist_id = ?`,
+            artistId,
+        )
+
+        if (!result) {
+            throw new Error('Unable to fetch artist')
+        }
+
+        return result
     }
 
     public async fetchAlbum(albumId: string): Promise<Album> {

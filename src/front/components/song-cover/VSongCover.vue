@@ -6,7 +6,7 @@
 
 <style lang="scss" scoped>
 .cover {
-    height: 40px;
+    height: 44px;
     border-radius: 8px;
     background-color: rgb(var(--mdui-color-surface-container-low));
     aspect-ratio: 1 / 1;

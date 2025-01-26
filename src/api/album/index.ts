@@ -7,3 +7,9 @@ export type Album = {
     artist: Artist
     songs: Array<Song>
 }
+
+export type AlbumPreview = {
+    name: string
+    id: number
+    songNumber: number
+}

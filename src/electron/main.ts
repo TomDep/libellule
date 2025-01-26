@@ -41,6 +41,14 @@ app.on('ready', async () => {
         return backend?.dataFetcher.fetchAlbum(albumId)
     })
 
+    ipcMain.handle('database:fetchArtist', (_, artistId) => {
+        return backend?.dataFetcher.fetchArtist(artistId)
+    })
+
+    ipcMain.handle('database:fetchArtistAlbumPreviews', (_, artistId) => {
+        return backend?.dataFetcher.fetchArtistAlbumPreviews(artistId)
+    })
+
     ipcMain.handle('database:fetchSongAlbumId', (_, songId) => {
         return backend?.dataFetcher.fetchSongAlbumId(songId)
     })
