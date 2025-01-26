@@ -74,15 +74,12 @@ export class DataBaseManager {
         })
     }
 
-    public async each<T = object>(sql: string, ...params: unknown[]): Promise<T[] | undefined>
-    public async each<T = object>(
-        sql: string,
-        params: Record<string, unknown>,
-    ): Promise<T[] | undefined>
+    public async each<T = object>(sql: string, ...params: unknown[]): Promise<T[]>
+    public async each<T = object>(sql: string, params: Record<string, unknown>): Promise<T[]>
     public async each<T = object>(
         sql: string,
         params: unknown[] | Record<string, unknown>,
-    ): Promise<T[] | undefined> {
+    ): Promise<T[]> {
         return new Promise<T[]>((resolve, reject) => {
             const rows: T[] = []
 
@@ -91,7 +88,7 @@ export class DataBaseManager {
                 params,
                 function (error, row: T) {
                     if (error) {
-                        reject(error)
+                        reject(rows)
                         return
                     }
 
@@ -99,7 +96,7 @@ export class DataBaseManager {
                 },
                 function (error) {
                     if (error) {
-                        reject(error)
+                        reject(rows)
                         return
                     }
 

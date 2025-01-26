@@ -69,8 +69,6 @@ export class SearchEngine {
             if (result.type === 'artist') {
                 searchResults.push(result)
             } else {
-                console.log(result.artist_ids)
-
                 const artists = result.artists?.split('$#$') ?? []
                 const artistIds = String(result.artist_ids).split('$#$') ?? []
 

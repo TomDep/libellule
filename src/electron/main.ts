@@ -36,4 +36,12 @@ app.on('ready', async () => {
     ipcMain.handle('database:search', (_, query) => {
         return backend?.searchEngine.search(query)
     })
+
+    ipcMain.handle('database:fetchAlbum', (_, albumId) => {
+        return backend?.dataFetcher.fetchAlbum(albumId)
+    })
+
+    ipcMain.handle('database:fetchSongAlbumId', (_, songId) => {
+        return backend?.dataFetcher.fetchSongAlbumId(songId)
+    })
 })

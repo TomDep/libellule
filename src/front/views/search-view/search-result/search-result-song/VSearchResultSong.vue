@@ -1,9 +1,10 @@
 <template>
     <div class="cover"></div>
     <div class="d-flex flex-column flex-1">
-        <router-link to="/collection">
-            <a class="body-large">{{ result.name }}</a>
+        <router-link to="/collection/album/1">
+            {{ result.name }}
             {{ result.id }}
+            {{ pathToCollection }}
         </router-link>
 
         <div class="d-flex body-medium on-surface-variant-text">
@@ -17,10 +18,18 @@
 
 <script lang="ts" setup>
 import { SearchResultSong } from '@/api'
+import { onBeforeMount, ref } from 'vue'
 
-defineProps<{
+const props = defineProps<{
     result: SearchResultSong
 }>()
+
+const pathToCollection = ref('')
+
+onBeforeMount(async () => {
+    const albumId = await window.api.fetchSongAlbumId(props.result.id)
+    pathToCollection.value = `/collection/album/${albumId}`
+})
 </script>
 
 <style scoped>

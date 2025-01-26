@@ -1,3 +1,4 @@
+import { DataFetcher } from '@/electron/backend/data-fetcher/DataFetcher'
 import { type FileManager } from '@/electron/backend/fileManager'
 import { DataBaseManager } from '@/electron/backend/databaseManager'
 import { SearchEngine } from '@/electron/backend/search'
@@ -7,6 +8,8 @@ import { COLLECTION_DIRECTORY, UNPROCESSED_FILES_DIRECTORY } from './config'
 export class Backend {
     public readonly databaseManager: DataBaseManager
     public readonly searchEngine: SearchEngine
+    public readonly dataFetcher: DataFetcher
+
     private readonly fileManager: FileManager
 
     public constructor(fileManager: FileManager) {
@@ -14,7 +17,9 @@ export class Backend {
 
         const rootDirectory = fileManager.getRootDirectory()
         this.databaseManager = new DataBaseManager(rootDirectory)
+
         this.searchEngine = new SearchEngine(this.databaseManager)
+        this.dataFetcher = new DataFetcher(this.databaseManager)
     }
 
     public async updateDatabase() {
