@@ -2,7 +2,7 @@
     <div class="d-flex flex-column w-80 gap-4">
         <VSearchBar :loading="searchBarLoading" class="align-self-center" @search="search" />
 
-        <div class="d-flex flex-column gap-2 align-self-start">
+        <div class="d-flex flex-column gap-2 flex-1">
             <VSearchResult
                 v-for="(searchResult, index) in searchResults"
                 :key="index"
@@ -17,7 +17,7 @@
 <script lang="ts" setup>
 import VSearchBar from '@/front/components/search-bar/VSearchBar.vue'
 import VSearchFilters from '@/front/views/search-view/search-filters/VSearchFilters.vue'
-import VSearchResult from '@/front/views/search-view/search-result/VSearchResult.vue'
+import VSearchResult from '@/front/views/search-view/search-result'
 import { type SearchResult } from '@/api'
 import { ref } from 'vue'
 
@@ -33,8 +33,6 @@ async function search(searchString: string) {
     searchBarLoading.value = true
     searchResults.value = await window.api.search(searchString)
     searchBarLoading.value = false
-
-    console.log(searchResults)
 }
 </script>
 

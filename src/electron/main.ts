@@ -1,5 +1,5 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
-import { Backend } from '../backend/backend'
+import { Backend } from '@/electron/backend/backend'
 import { ElectronFileManager } from './electronFileManager'
 import path from 'path'
 
@@ -33,7 +33,7 @@ app.on('ready', async () => {
     backend = new Backend(electronFileManager)
     await backend.updateDatabase()
 
-    ipcMain.handle('database:search', (event, query) => {
-        return backend?.databaseManager.search(query)
+    ipcMain.handle('database:search', (_, query) => {
+        return backend?.searchEngine.search(query)
     })
 })

@@ -1,11 +1,12 @@
 @forward 'reset';
-@forward 'font';
 @forward 'display';
 @forward 'overflow';
 @forward 'spacing';
 @forward 'flex';
 @forward 'sizing';
 @forward 'colors';
+@forward 'text';
+@forward 'cursor';
 
 * {
     scrollbar-width: thin;

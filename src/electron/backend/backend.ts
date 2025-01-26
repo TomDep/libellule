@@ -1,17 +1,20 @@
-import { type FileManager } from '@/backend/fileManager'
-import { DataBaseManager } from '@/backend/databaseManager'
+import { type FileManager } from '@/electron/backend/fileManager'
+import { DataBaseManager } from '@/electron/backend/databaseManager'
+import { SearchEngine } from '@/electron/backend/search'
 import path from 'path'
 import { COLLECTION_DIRECTORY, UNPROCESSED_FILES_DIRECTORY } from './config'
 
 export class Backend {
-    private readonly fileManager: FileManager
     public readonly databaseManager: DataBaseManager
+    public readonly searchEngine: SearchEngine
+    private readonly fileManager: FileManager
 
     public constructor(fileManager: FileManager) {
         this.fileManager = fileManager
 
         const rootDirectory = fileManager.getRootDirectory()
         this.databaseManager = new DataBaseManager(rootDirectory)
+        this.searchEngine = new SearchEngine(this.databaseManager)
     }
 
     public async updateDatabase() {
@@ -19,7 +22,7 @@ export class Backend {
 
         for (const file of files) {
             const songPath = path.join(UNPROCESSED_FILES_DIRECTORY, file)
-            const songId = await this.databaseManager.processSong(songPath)
+            const songId = await this.databaseManager.processSong(songPath, file)
 
             const fileDestination = path.join(COLLECTION_DIRECTORY, file)
             this.fileManager.moveFile(songPath, fileDestination).then((_) => {

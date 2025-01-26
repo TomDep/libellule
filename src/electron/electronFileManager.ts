@@ -1,6 +1,6 @@
-import { type FileManager } from '@/backend/fileManager'
+import { type FileManager } from '@/electron/backend/fileManager'
 import { app as ElectronApp } from 'electron'
-import { COLLECTION_DIRECTORY, UNPROCESSED_FILES_DIRECTORY } from '@/backend/config'
+import { COLLECTION_DIRECTORY, UNPROCESSED_FILES_DIRECTORY } from '@/electron/backend/config'
 import fs from 'fs'
 
 export class ElectronFileManager implements FileManager {

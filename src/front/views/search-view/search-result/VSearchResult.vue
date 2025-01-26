@@ -1,27 +1,19 @@
 <template>
-    <div class="d-flex flex-row gap-2 flex-1">
-        <div class="d-flex flex-column flex-1">
-            <p>{{ result.name }}</p>
-            <p>{{ artistName }}</p>
-        </div>
-        <p>{{ result.type }}</p>
-    </div>
+    <VSearchResultBase :result="result">
+        <VSearchResultArtist v-if="result.type === 'artist'" :result="result" />
+        <VSearchResultAlbum v-else-if="result.type === 'album'" :result="result" />
+        <VSearchResultSong v-else :result="result" />
+    </VSearchResultBase>
 </template>
 
 <script lang="ts" setup>
 import { SearchResult } from '@/api'
-import { computed } from 'vue'
+import VSearchResultAlbum from '@/front/views/search-view/search-result/search-result-album'
+import VSearchResultArtist from '@/front/views/search-view/search-result/search-result-artist'
+import VSearchResultBase from '@/front/views/search-view/search-result/search-result-base'
+import VSearchResultSong from '@/front/views/search-view/search-result/search-result-song'
 
-const props = defineProps<{
+defineProps<{
     result: SearchResult
 }>()
-
-const artistName = computed(() => {
-    if (props.result.type === 'artist') {
-        return props.result.name
-    } else {
-        return props.result.artist
-    }
-})
 </script>
-<style scoped></style>
