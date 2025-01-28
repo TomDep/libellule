@@ -1,6 +1,7 @@
 import { DataFetcher } from '@/electron/backend/data-fetcher/DataFetcher'
 import { type FileManager } from '@/electron/backend/fileManager'
 import { DataBaseManager } from '@/electron/backend/databaseManager'
+import { MusicPlayer } from '@/electron/backend/music-player/MusicPlayer'
 import { SearchEngine } from '@/electron/backend/search'
 import path from 'path'
 import { COLLECTION_DIRECTORY, UNPROCESSED_FILES_DIRECTORY } from './config'
@@ -9,11 +10,13 @@ export class Backend {
     public readonly databaseManager: DataBaseManager
     public readonly searchEngine: SearchEngine
     public readonly dataFetcher: DataFetcher
+    public readonly musicPlayer: MusicPlayer
 
     private readonly fileManager: FileManager
 
     public constructor(fileManager: FileManager) {
         this.fileManager = fileManager
+        this.musicPlayer = new MusicPlayer()
 
         const rootDirectory = fileManager.getRootDirectory()
         this.databaseManager = new DataBaseManager(rootDirectory)
@@ -38,5 +41,6 @@ export class Backend {
 
     public quit(): void {
         this.databaseManager.disconnect()
+        this.musicPlayer.stop()
     }
 }
