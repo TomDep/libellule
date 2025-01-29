@@ -2,6 +2,7 @@
   "exclude": ["src/**/__tests__/*", "node_modules/**/*"],
   "module": "esnext",
   "compilerOptions": {
+    "target": "esnext",
     "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "allowJs": true,

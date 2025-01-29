@@ -5,9 +5,10 @@ import path from 'path'
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 let backend: Backend | null = null
+let window: BrowserWindow | null = null
 
 app.whenReady().then(() => {
-    const win = new BrowserWindow({
+    window = new BrowserWindow({
         webPreferences: {
             // Link to your compiled preload file.
             preload: path.join(app.getAppPath(), 'dist-electron/preload.mjs'),
@@ -20,7 +21,7 @@ app.whenReady().then(() => {
         icon: '../public/favicon.ico',
     })
 
-    return win.loadURL(process.env.VITE_DEV_SERVER_URL ?? '')
+    return window.loadURL(process.env.VITE_DEV_SERVER_URL ?? '')
 })
 
 app.on('window-all-closed', () => {
@@ -51,5 +52,27 @@ app.on('ready', async () => {
 
     ipcMain.handle('database:fetchSongAlbumId', (_, songId) => {
         return backend?.dataFetcher.fetchSongAlbumId(songId)
+    })
+
+    ipcMain.on('player:play', async (_, songId) => {
+        const filename = await backend?.dataFetcher.fetchSongLocation(songId)
+        console.log(filename)
+
+        if (filename) {
+            backend?.soundPlayer.play(filename)
+            window?.webContents.send('player:songPlaying', songId)
+        }
+    })
+
+    ipcMain.on('player:stop', (_) => {
+        backend?.soundPlayer.stop()
+    })
+
+    ipcMain.on('player:resume', (_) => {
+        backend?.soundPlayer.resume()
+    })
+
+    ipcMain.on('player:pause', (_) => {
+        backend?.soundPlayer.pause()
     })
 })

@@ -99,6 +99,19 @@ export class DataFetcher {
         } satisfies Album
     }
 
+    public async fetchSongLocation(songId: string): Promise<string> {
+        const result = await this.databaseManager.get<{ filename: string }>(
+            'SELECT file_location as filename FROM song WHERE song_id = ?',
+            songId,
+        )
+
+        if (!result) {
+            throw new Error('Unable to fetch song location')
+        }
+
+        return result.filename
+    }
+
     public async fetchSong(songId: number): Promise<Song> {
         const songArtists = await this.fetchSongArtists(songId)
 

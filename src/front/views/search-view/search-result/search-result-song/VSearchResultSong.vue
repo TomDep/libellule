@@ -1,5 +1,5 @@
 <template>
-    <VSongCover />
+    <VSongCover :song-id="result.id" />
     <div class="d-flex flex-column flex-1">
         <router-link :to="pathToCollection">
             <a class="body-large">{{ result.name }}</a>
